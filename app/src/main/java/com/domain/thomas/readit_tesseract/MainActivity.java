@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.io.IOException;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -25,6 +27,7 @@ public class MainActivity extends Activity {
     private static final int IMAGE_CAPTURE = 1;
 
     private ImageView imageView;
+    private TextView textView;
 
     private Uri imageUri;
 
@@ -32,27 +35,17 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView) findViewById(R.id.view);
+        textView = (TextView) findViewById(R.id.ReadText);
         Button button = (Button) findViewById(R.id.shoot);
-        Button buttonDelete = (Button) findViewById(R.id.delete);
 
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startCamera();
             }
         });
-
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int rowsDeleted = getContentResolver().delete(imageUri, null, null);
-                Log.d(TAG, rowsDeleted + " rows deleted");
-            }
-        });
-
 
     }
 
@@ -63,6 +56,7 @@ public class MainActivity extends Activity {
         if(requestCode == IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 try {
+
                     Bitmap b1 = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
 
                     float w1 = b1.getWidth();
@@ -73,6 +67,16 @@ public class MainActivity extends Activity {
 
                     Bitmap b2 = Bitmap.createScaledBitmap(b1, w2, h2, false);
                     imageView.setImageBitmap(b2);
+
+                    TessBaseAPI bildOcr = new TessBaseAPI();
+                    bildOcr.init("storage/emulated/0/","deu");
+                    bildOcr.setImage(b1);
+                    textView.setText( bildOcr.getUTF8Text());
+
+                    bildOcr.end();
+                    int rowsDeleted = getContentResolver().delete(imageUri, null, null);
+                    Log.d(TAG, rowsDeleted + " rows deleted");
+
                 } catch (IOException e) {
                     Log.e(TAG, "setBitmap()", e);
                 }
@@ -89,8 +93,6 @@ public class MainActivity extends Activity {
         values.put(MediaStore.Images.Media.TITLE, TITLE);
         values.put(MediaStore.Images.Media.DESCRIPTION, DESCRIPTION);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-
-        //grantUriPermission("com.android.providers.media.MediaProvider", imageUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
