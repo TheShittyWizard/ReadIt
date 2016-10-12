@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
     private static final int IMAGE_CAPTURE = 1;
 
     private ImageView imageView;
-    private TextView textView;
+    private TextView edittextView;
 
     private Uri imageUri;
 
@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView) findViewById(R.id.view);
-        textView = (TextView) findViewById(R.id.ReadText);
+        edittextView = (TextView) findViewById(R.id.editText);
 
         Button button = (Button) findViewById(R.id.shoot);
 
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    textView.setText(readText);
+                                    edittextView.setText(readText);
                                 }
                             });
 
