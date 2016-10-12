@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.os.Handler;
 import java.io.IOException;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends Activity {
 
@@ -39,6 +41,7 @@ public class MainActivity extends Activity {
 
         imageView = (ImageView) findViewById(R.id.view);
         textView = (TextView) findViewById(R.id.ReadText);
+
         Button button = (Button) findViewById(R.id.shoot);
 
         button.setOnClickListener(new View.OnClickListener(){
@@ -46,7 +49,6 @@ public class MainActivity extends Activity {
                 startCamera();
             }
         });
-
     }
 
     @Override
@@ -71,11 +73,23 @@ public class MainActivity extends Activity {
                     Runnable r = new Runnable() {
                         @Override
                         public void run() {
-                            TessBaseAPI bildOcr = new TessBaseAPI();
+                            final TessBaseAPI bildOcr = new TessBaseAPI();
                             bildOcr.init("storage/emulated/0/","deu");
                             bildOcr.setImage(b1);
-                            textView.setText( bildOcr.getUTF8Text());
+                            Log.d(TAG, "Bild gesetzt");
+
+                            final String readText = bildOcr.getUTF8Text();
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    textView.setText(readText);
+                                }
+                            });
+
+                            Log.d(TAG, "Text gelesen");
                             bildOcr.end();
+                            Log.d(TAG, "OCR beendet");
                         }
                     };
                     Thread t = new Thread(r);
