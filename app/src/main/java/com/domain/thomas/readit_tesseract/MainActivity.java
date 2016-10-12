@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         imageView = (ImageView) findViewById(R.id.view);
         edittextView = (TextView) findViewById(R.id.editText);
@@ -94,9 +95,6 @@ public class MainActivity extends Activity {
                     };
                     Thread t = new Thread(r);
                     t.start();
-
-                    int rowsDeleted = getContentResolver().delete(imageUri, null, null);
-                    Log.d(TAG, rowsDeleted + " rows deleted");
 
                 } catch (IOException e) {
                     Log.e(TAG, "setBitmap()", e);
