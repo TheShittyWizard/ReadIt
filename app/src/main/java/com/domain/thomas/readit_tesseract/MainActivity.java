@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    Bitmap b1 = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    final Bitmap b1 = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
 
                     float w1 = b1.getWidth();
                     float h1 = b1.getHeight();
@@ -68,12 +68,19 @@ public class MainActivity extends Activity {
                     Bitmap b2 = Bitmap.createScaledBitmap(b1, w2, h2, false);
                     imageView.setImageBitmap(b2);
 
-                    TessBaseAPI bildOcr = new TessBaseAPI();
-                    bildOcr.init("storage/emulated/0/","deu");
-                    bildOcr.setImage(b1);
-                    textView.setText( bildOcr.getUTF8Text());
+                    Runnable r = new Runnable() {
+                        @Override
+                        public void run() {
+                            TessBaseAPI bildOcr = new TessBaseAPI();
+                            bildOcr.init("storage/emulated/0/","deu");
+                            bildOcr.setImage(b1);
+                            textView.setText( bildOcr.getUTF8Text());
+                            bildOcr.end();
+                        }
+                    };
+                    Thread t = new Thread(r);
+                    t.start();
 
-                    bildOcr.end();
                     int rowsDeleted = getContentResolver().delete(imageUri, null, null);
                     Log.d(TAG, rowsDeleted + " rows deleted");
 
@@ -93,7 +100,6 @@ public class MainActivity extends Activity {
         values.put(MediaStore.Images.Media.TITLE, TITLE);
         values.put(MediaStore.Images.Media.DESCRIPTION, DESCRIPTION);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-
         imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
