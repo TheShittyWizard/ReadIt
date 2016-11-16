@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ReadIt_Tesseract</string>
+    <string name="app_name">ReadIt</string>
+    <string name="stop_analysis">Stop analysis</string>
 </resources>

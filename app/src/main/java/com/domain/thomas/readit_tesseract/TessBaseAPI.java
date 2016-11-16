@@ -17,14 +17,14 @@
 
 package com.domain.thomas.readit_tesseract;
 
+import java.io.File;
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 import com.googlecode.leptonica.android.Pix;
 import com.googlecode.leptonica.android.Pixa;
 import com.googlecode.leptonica.android.ReadFile;
-
-import java.io.File;
 
 /**
  * Java interface for the Tesseract OCR engine. Does not implement all available
@@ -191,20 +191,20 @@ public class TessBaseAPI {
          * The returned bounding box is in the Android coordinate system,
          * which has the origin in the top left.
          * 
-         * @return an {@link Rect} bounding box
+         * @return an {@link android.graphics.Rect} bounding box
          */
         public Rect getCurrentWordRect() {
             return wordRect;
         }
 
         /**
-         * Return the bounds of the current recognition region. May match the
+         * Return the bounds of the current recognition region. May match the 
          * bounds of the entire image or a sub-rectangle of the entire image.
-         *
+         * 
          * The returned bounding box is in the Android coordinate system,
          * which has the origin in the top left.
-         *
-         * @return an {@link Rect} bounding box
+         * 
+         * @return an {@link android.graphics.Rect} bounding box
          */
         public Rect getCurrentRect() {
             return textRect;

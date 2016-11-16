@@ -3,6 +3,7 @@
     package="com.domain.thomas.readit_tesseract">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.Read_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,9 +14,11 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ReadProgressActivity">
+
         </activity>
     </application>
 

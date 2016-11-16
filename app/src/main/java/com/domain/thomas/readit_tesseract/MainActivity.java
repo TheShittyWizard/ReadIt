@@ -27,10 +27,12 @@ public class MainActivity extends Activity {
     private static final int IMAGE_CAPTURE = 1;
     private static final int IMG_RESULT = 2;
 
+    public static final TessBaseAPI picOCR = new TessBaseAPI();
+
     private ImageView imageView;
-    private TextView edittextView;
-    private Button LoadImage;
-    private Button GetImage;
+    private TextView editText;
+    private Button loadImage;
+    private Button getImage;
 
     private Uri imageURI;
 
@@ -42,11 +44,11 @@ public class MainActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         imageView = (ImageView) findViewById(R.id.view);
-        LoadImage = (Button) findViewById(R.id.buttonGetPicture);
-        GetImage = (Button) findViewById(R.id.buttonTakePicture);
-        edittextView = (TextView) findViewById(R.id.editText);
+        loadImage = (Button) findViewById(R.id.buttonGetPicture);
+        getImage = (Button) findViewById(R.id.buttonTakePicture);
+        editText = (TextView) findViewById(R.id.editText);
 
-        LoadImage.setOnClickListener(new View.OnClickListener() {
+        loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK,
@@ -55,7 +57,7 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, IMG_RESULT);
             }
         });
-        GetImage.setOnClickListener(new View.OnClickListener() {
+        getImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startCamera();
@@ -82,30 +84,7 @@ public class MainActivity extends Activity {
 
             final Bitmap bt = b1;
 
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    final TessBaseAPI bildOcr = new TessBaseAPI();
-                    bildOcr.init("storage/emulated/0/","deu");
-                    bildOcr.setImage(bt);
-                    Log.d(TAG, "Bild gesetzt");
-
-                    final String readText = bildOcr.getUTF8Text();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            edittextView.setText(readText);
-                        }
-                    });
-
-                    Log.d(TAG, "Text gelesen");
-                    bildOcr.end();
-                    Log.d(TAG, "OCR beendet");
-                }
-            };
-            Thread t = new Thread(r);
-            t.start();
+            startOCR(bt);
 
             Bitmap b2 = bmDownscale(b1, 480);
             imageView.setImageBitmap(b2);
@@ -119,33 +98,11 @@ public class MainActivity extends Activity {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (2)", Toast.LENGTH_LONG)
                         .show();
             }
+            getContentResolver().delete(imageURI, null, null);
 
             final Bitmap bt = b1;
 
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    final TessBaseAPI bildOcr = new TessBaseAPI();
-                    bildOcr.init("storage/emulated/0/","deu");
-                    bildOcr.setImage(bt);
-                    Log.d(TAG, "Bild gesetzt");
-
-                    final String readText = bildOcr.getUTF8Text();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            edittextView.setText(readText);
-                        }
-                    });
-
-                    Log.d(TAG, "Text gelesen");
-                    bildOcr.end();
-                    Log.d(TAG, "OCR beendet");
-                }
-            };
-            Thread t = new Thread(r);
-            t.start();
+            startOCR(bt);
 
             Bitmap b2 = bmDownscale(b1, 480);
             imageView.setImageBitmap(b2);
@@ -162,6 +119,38 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
         startActivityForResult(intent, IMAGE_CAPTURE);
+    }
+
+    public void startOCR(final Bitmap bm) {
+        final String TAG = MainActivity.class.getSimpleName();
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+
+                picOCR.init("storage/emulated/0/", "eng");
+                picOCR.setImage(bm);
+                Log.d(TAG, "OCR started");
+
+                final String readText = picOCR.getUTF8Text();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        editText.setText(readText);
+                    }
+                });
+                Log.d(TAG, "Text read");
+
+                picOCR.end();
+                Log.d(TAG, "OCR ended");
+            }
+        };
+        Thread OCR = new Thread(r, "OCR");
+        OCR.start();
+
+        Intent intent = new Intent(this, ReadProgressActivity.class);
+        startActivity(intent);
     }
 
     public Bitmap bmDownscale(Bitmap bm, int hResTarget) {
