@@ -149,8 +149,8 @@ public class MainActivity extends Activity {
         Thread OCR = new Thread(r, "OCR");
         OCR.start();
 
-        Intent intent = new Intent(this, ReadProgressActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, ReadProgressActivity.class);
+        //startActivity(intent);
     }
 
     public Bitmap bmDownscale(Bitmap bm, int hResTarget) {
