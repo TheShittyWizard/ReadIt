@@ -28,25 +28,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/view" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_marginBottom="13dp"
-        android:layout_above="@+id/buttonGetPicture"
-        android:layout_alignParentStart="true"
-        android:textColorLink="?attr/actionModeSplitBackground" />
+        android:layout_toEndOf="@+id/view"
+        android:layout_alignStart="@+id/buttonGetPicture" />
 
     <Button
         android:text="get from gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonGetPicture"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/buttonTakePicture"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_marginBottom="10dp"
+        android:textColorLink="?attr/actionModeSplitBackground"
+        android:layout_above="@+id/buttonGetPicture"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
