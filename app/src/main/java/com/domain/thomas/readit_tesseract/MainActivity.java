@@ -34,8 +34,9 @@ public class MainActivity extends Activity {
     private Button loadImage;
     private Button getImage;
     private Button reset;
-
     private Uri imageURI;
+
+    public static Boolean OCRThread = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 editText.setText("");
-
+                imageView.setImageResource(0);
             }
         });
     }
@@ -136,6 +137,7 @@ public class MainActivity extends Activity {
         Runnable r = new Runnable() {
             @Override
             public void run() {
+                OCRThread = true;
 
                 picOCR.init("storage/emulated/0/", "deu");
                 picOCR.setImage(bm);
@@ -153,6 +155,8 @@ public class MainActivity extends Activity {
 
                 picOCR.end();
                 Log.d(TAG, "OCR ended");
+
+                OCRThread = false;
             }
         };
         Thread OCR = new Thread(r, "OCR");

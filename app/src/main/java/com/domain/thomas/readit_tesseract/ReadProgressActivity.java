@@ -1,6 +1,7 @@
 package com.domain.thomas.readit_tesseract;
 
 import android.content.pm.ActivityInfo;
+import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,8 +25,6 @@ public class ReadProgressActivity extends AppCompatActivity {
         stopAnalysis = (Button) findViewById(R.id.stopAnalysis);
         ocrProgress = (ProgressBar) findViewById(R.id.progressBar);
 
-
-
         stopAnalysis.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -33,5 +32,23 @@ public class ReadProgressActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+
+                while(MainActivity.OCRThread){
+                    /*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ocrProgress.setProgress(MainActivity.picOCR.ProgressValues.getPercent());
+                        }
+                    });*/
+                }
+                finish();
+            }
+        };
+        Thread OCRProgress = new Thread(r, "OCRProgress");
+        OCRProgress.start();
     }
 }
