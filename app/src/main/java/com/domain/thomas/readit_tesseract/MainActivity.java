@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
     private TextView editText;
     private Button loadImage;
     private Button getImage;
+    private Button reset;
 
     private Uri imageURI;
 
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
         loadImage = (Button) findViewById(R.id.buttonGetPicture);
         getImage = (Button) findViewById(R.id.buttonTakePicture);
         editText = (TextView) findViewById(R.id.editText);
+        reset = (Button) findViewById(R.id.buttonReset);
 
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +63,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startCamera();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText("");
+
             }
         });
     }
@@ -128,11 +137,11 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
 
-                picOCR.init("storage/emulated/0/", "eng");
+                picOCR.init("storage/emulated/0/", "deu");
                 picOCR.setImage(bm);
                 Log.d(TAG, "OCR started");
 
-                final String readText = picOCR.getUTF8Text();
+                final String readText = picOCR.getHOCRText(0);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -149,8 +158,8 @@ public class MainActivity extends Activity {
         Thread OCR = new Thread(r, "OCR");
         OCR.start();
 
-        //Intent intent = new Intent(this, ReadProgressActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, ReadProgressActivity.class);
+        startActivity(intent);
     }
 
     public Bitmap bmDownscale(Bitmap bm, int hResTarget) {
