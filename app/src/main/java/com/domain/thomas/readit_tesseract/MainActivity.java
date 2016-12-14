@@ -145,10 +145,12 @@ public class MainActivity extends Activity {
 
                 final String readText = picOCR.getHOCRText(0);
 
+                final String rawText = readText.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ");
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        editText.setText(readText);
+                        editText.setText(rawText);
                     }
                 });
                 Log.d(TAG, "Text read");
