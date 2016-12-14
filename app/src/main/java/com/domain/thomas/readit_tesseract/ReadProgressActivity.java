@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.googlecode.tesseract.android.*;
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 public class ReadProgressActivity extends AppCompatActivity {
 
     private Button stopAnalysis;
@@ -19,6 +22,9 @@ public class ReadProgressActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         stopAnalysis = (Button) findViewById(R.id.stopAnalysis);
+        ocrProgress = (ProgressBar) findViewById(R.id.progressBar);
+
+
 
         stopAnalysis.setOnClickListener(new View.OnClickListener(){
             @Override
