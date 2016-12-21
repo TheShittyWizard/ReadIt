@@ -6,15 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.googlecode.tesseract.android.*;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import static com.domain.thomas.readit_tesseract.MainActivity.previewImage;
+
 public class ReadProgressActivity extends AppCompatActivity {
 
     private Button stopAnalysis;
     private ProgressBar ocrProgress;
+    public ImageView progressImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +28,12 @@ public class ReadProgressActivity extends AppCompatActivity {
 
         stopAnalysis = (Button) findViewById(R.id.stopAnalysis);
         ocrProgress = (ProgressBar) findViewById(R.id.progressBar);
+        progressImage = (ImageView) findViewById(R.id.progressImageView);
 
-        stopAnalysis.setOnClickListener(new View.OnClickListener(){
+
+        progressImage.setImageBitmap(previewImage);
+
+        stopAnalysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.picOCR.stop();
@@ -38,14 +46,14 @@ public class ReadProgressActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                while(MainActivity.OCRThread){
+                while (MainActivity.OCRThread) {
                     ocrProgress.setProgress(MainActivity.progress);
                 }
                 ocrProgress.setProgress(0);
                 finish();
-
             }
         };
+
         Thread OCRProgress = new Thread(r, "OCRProgress");
         OCRProgress.start();
     }

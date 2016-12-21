@@ -5,10 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,15 +30,15 @@ public class MainActivity extends Activity {
     private static final int IMG_RESULT = 2;
 
     public static int progress;
+    public static Bitmap previewImage;
 
-    public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier(){
+    public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier() {
         @Override
-        public void onProgressValues(TessBaseAPI.ProgressValues progressValues){
+        public void onProgressValues(TessBaseAPI.ProgressValues progressValues) {
             progress = progressValues.getPercent();
         }
     });
 
-    private ImageView imageView;
     private TextView editText;
     private Button loadImage;
     private Button getImage;
@@ -52,7 +54,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        imageView = (ImageView) findViewById(R.id.view);
         loadImage = (Button) findViewById(R.id.buttonGetPicture);
         getImage = (Button) findViewById(R.id.buttonTakePicture);
         editText = (TextView) findViewById(R.id.editText);
@@ -77,13 +78,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 editText.setText("");
-                imageView.setImageResource(0);
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == IMG_RESULT && resultCode == RESULT_OK
@@ -103,9 +103,6 @@ public class MainActivity extends Activity {
 
             startOCR(bt);
 
-            Bitmap b2 = bmDownscale(b1, 480);
-            imageView.setImageBitmap(b2);
-
         } else if (requestCode == IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             Bitmap b1 = null;
@@ -120,13 +117,10 @@ public class MainActivity extends Activity {
             final Bitmap bt = b1;
 
             startOCR(bt);
-
-            Bitmap b2 = bmDownscale(b1, 480);
-            imageView.setImageBitmap(b2);
         }
     }
 
-    private void startCamera(){
+    private void startCamera() {
 
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, TITLE);
@@ -152,7 +146,7 @@ public class MainActivity extends Activity {
 
                 final String readText = picOCR.getHOCRText(0);
 
-                final String rawText = readText.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ");
+                final String rawText = parseHOCRText(readText);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -168,8 +162,15 @@ public class MainActivity extends Activity {
                 OCRThread = false;
             }
         };
+        progress = 0;
         Thread OCR = new Thread(r, "OCR");
         OCR.start();
+
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        previewImage = bmDownscale(bm, size.x * 3 / 4);
 
         Intent intent = new Intent(this, ReadProgressActivity.class);
         startActivity(intent);
@@ -183,4 +184,23 @@ public class MainActivity extends Activity {
 
         return Bitmap.createScaledBitmap(bm, w2, hResTarget, false);
     }
+
+    public String parseHOCRText(final String text) {
+        String rawText = text.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "); //replace html tags with spaces
+        rawText = rawText.replaceFirst("   ", ""); //remove access spaces at the start
+
+        return rawText;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
