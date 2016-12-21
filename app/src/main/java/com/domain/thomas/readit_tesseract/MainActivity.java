@@ -27,7 +27,14 @@ public class MainActivity extends Activity {
     private static final int IMAGE_CAPTURE = 1;
     private static final int IMG_RESULT = 2;
 
-    public static final TessBaseAPI picOCR = new TessBaseAPI();
+    public static int progress;
+
+    public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier(){
+        @Override
+        public void onProgressValues(TessBaseAPI.ProgressValues progressValues){
+            progress = progressValues.getPercent();
+        }
+    });
 
     private ImageView imageView;
     private TextView editText;

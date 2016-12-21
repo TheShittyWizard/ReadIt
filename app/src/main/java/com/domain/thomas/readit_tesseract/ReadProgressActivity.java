@@ -29,6 +29,7 @@ public class ReadProgressActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainActivity.picOCR.stop();
+                ocrProgress.setProgress(0);
                 finish();
             }
         });
@@ -38,14 +39,11 @@ public class ReadProgressActivity extends AppCompatActivity {
             public void run() {
 
                 while(MainActivity.OCRThread){
-                    /*runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ocrProgress.setProgress(MainActivity.picOCR.ProgressValues.getPercent());
-                        }
-                    });*/
+                    ocrProgress.setProgress(MainActivity.progress);
                 }
+                ocrProgress.setProgress(0);
                 finish();
+
             }
         };
         Thread OCRProgress = new Thread(r, "OCRProgress");
