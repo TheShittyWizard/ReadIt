@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/progressImageView"
+        android:id="@+id/editImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="55dp"
@@ -15,17 +15,17 @@
         android:text="Full Recognition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/FullRecognition"
+        android:id="@+id/fullRecognition"
         android:layout_marginBottom="21dp"
-        android:layout_above="@+id/ManualDefinition"
-        android:layout_alignStart="@+id/ManualDefinition"
-        android:layout_alignEnd="@+id/ManualDefinition" />
+        android:layout_above="@+id/manualDefinition"
+        android:layout_alignStart="@+id/manualDefinition"
+        android:layout_alignEnd="@+id/manualDefinition" />
 
     <Button
         android:text="Manual Definition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ManualDefinition"
+        android:id="@+id/manualDefinition"
         android:layout_marginStart="14dp"
         android:layout_marginBottom="27dp"
         android:layout_alignParentBottom="true"
@@ -35,9 +35,9 @@
         android:text="Automatic Definition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/AutomaticDefinition"
-        android:layout_alignBaseline="@+id/FullRecognition"
-        android:layout_alignBottom="@+id/FullRecognition"
-        android:layout_toEndOf="@+id/FullRecognition" />
+        android:layout_alignBaseline="@+id/fullRecognition"
+        android:layout_alignBottom="@+id/fullRecognition"
+        android:layout_toEndOf="@+id/fullRecognition"
+        android:id="@+id/automaticDefinition" />
 
 </RelativeLayout>

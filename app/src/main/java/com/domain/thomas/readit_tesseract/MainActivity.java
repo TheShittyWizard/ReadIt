@@ -29,19 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int IMAGE_CAPTURE = 1;
     private static final int IMAGE_GALLERY = 2;
 
-    public static int progress;
     public static Bitmap imageBm;
-    public static Bitmap previewImage;
-    public static boolean stopRecognition;
-    public static Boolean OCRThread = false;
-
-    public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier() {
-        @Override
-        //gets the percentage value of the progress
-        public void onProgressValues(TessBaseAPI.ProgressValues progressValues) {
-            progress = progressValues.getPercent();
-        }
-    });
 
     //variables for ui elements
     private TextView editText;
@@ -128,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
             imageBm = null;
             try {
                 imageBm = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
-                startOCR(imageBm);
+                Intent intent = new Intent(this, EditImageActivity.class);
+                startActivity(intent);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (1)", Toast.LENGTH_LONG)
                         .show();
@@ -139,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
            imageBm = null;
             try {
                 imageBm = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
-                startOCR(imageBm);
+                Intent intent = new Intent(this, EditImageActivity.class);
+                startActivity(intent);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (2)", Toast.LENGTH_LONG)
                         .show();
@@ -162,79 +152,6 @@ public class MainActivity extends AppCompatActivity {
         //add the uri to the taken image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
         startActivityForResult(intent, IMAGE_CAPTURE);
-    }
-
-    public void startOCR(final Bitmap bm) {
-        final String TAG = MainActivity.class.getSimpleName();
-
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                //show that a OCRThread is active
-                OCRThread = true;
-
-                //set parameters for the recognition
-                picOCR.init("storage/emulated/0/", "deu");
-                picOCR.setImage(bm);
-
-                //start the recognition
-                final String readText = picOCR.getHOCRText(0);
-
-                //filter the actual text out of readText
-                final String rawText = parseHOCRText(readText);
-
-                //set the text to the textbox
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        editText.setText(rawText);
-                    }
-                });
-
-                //end recognition
-                picOCR.end();
-
-                //thread now inactive
-                OCRThread = false;
-            }
-        };
-
-        //reset recognition progress and start recognition
-        progress = 0;
-        Thread OCR = new Thread(r, "OCR");
-        OCR.start();
-
-        //get size of the display
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        //scale image to display size
-        previewImage = bmDownscale(bm, size.x * 3 / 4);
-
-        //start the ProgressActivity
-        Intent intent = new Intent(this, ReadProgressActivity.class);
-        startActivity(intent);
-    }
-
-    public Bitmap bmDownscale(Bitmap bm, int hResTarget) {
-        float w1 = bm.getWidth();
-        float h1 = bm.getHeight();
-
-        int w2 = (int) (w1 / h1 * (float) hResTarget);
-
-        return Bitmap.createScaledBitmap(bm, w2, hResTarget, false);
-    }
-
-    public String parseHOCRText(final String text) {
-        //don't filter text if recognition was stopped
-        if(stopRecognition == false) {
-            String rawText = text.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "); //replace html tags with spaces
-            rawText = rawText.replaceFirst("   ", ""); //remove access spaces at the start
-
-            return rawText;
-        }
-        return text;
     }
 }
 

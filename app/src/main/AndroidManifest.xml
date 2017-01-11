@@ -17,9 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReadProgressActivity">
+        <activity android:name=".ReadProgressActivity"></activity>
+        <activity android:name=".EditImageActivity"></activity>
+        <activity android:name=".EndActivity"></activity>
 
-        </activity>
     </application>
 
 </manifest>
