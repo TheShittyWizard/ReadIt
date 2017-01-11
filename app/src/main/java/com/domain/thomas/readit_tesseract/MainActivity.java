@@ -10,16 +10,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import java.io.IOException;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     //values to differentiate the Activities
     private static final int IMAGE_CAPTURE = 1;
@@ -46,6 +50,13 @@ public class MainActivity extends Activity {
     private Button reset;
     private Uri imageURI;
 
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
 
     @Override
@@ -85,6 +96,22 @@ public class MainActivity extends Activity {
                 editText.setText("");
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        //textview.setText(item.getTitle());
+        if(android.R.id.home == item.getItemId()){
+            Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
 
     @Override

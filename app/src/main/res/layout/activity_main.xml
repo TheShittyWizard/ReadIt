@@ -18,7 +18,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignStart="@+id/buttonGetPicture"
         android:elevation="0dp"
-        android:text="take a photo" />
+        android:text="@string/open_camera" />
 
     <Button
         android:id="@+id/buttonGetPicture"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonTakePicture"
         android:layout_alignParentEnd="true"
-        android:text="get from gallery" />
+        android:text="@string/open_gallery" />
 
     <EditText
         android:id="@+id/editText"
@@ -46,6 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonTakePicture"
         android:layout_alignParentStart="true"
-        android:text="Reset" />
+        android:text="@string/reset" />
 
 </RelativeLayout>
