@@ -30,7 +30,6 @@ public class ReadProgressActivity extends AppCompatActivity {
         ocrProgress = (ProgressBar) findViewById(R.id.progressBar);
         progressImage = (ImageView) findViewById(R.id.progressImageView);
 
-
         progressImage.setImageBitmap(previewImage);
 
         stopAnalysis.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +37,7 @@ public class ReadProgressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MainActivity.picOCR.stop();
                 ocrProgress.setProgress(0);
+                MainActivity.stopRecognition = true;
                 finish();
             }
         });
@@ -50,6 +50,7 @@ public class ReadProgressActivity extends AppCompatActivity {
                     ocrProgress.setProgress(MainActivity.progress);
                 }
                 ocrProgress.setProgress(0);
+                MainActivity.stopRecognition = false;
                 finish();
             }
         };

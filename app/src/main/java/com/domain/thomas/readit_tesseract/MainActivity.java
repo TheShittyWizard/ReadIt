@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,29 +22,31 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 
 public class MainActivity extends Activity {
 
-    private static final String TITLE = "tesseracttest";
-    private static final String DESCRIPTION = "Ein mit der App tesseracttest aufgenommenes Foto";
-    private static final String TAG = MainActivity.class.getSimpleName();
+    //values to differentiate the Activities
     private static final int IMAGE_CAPTURE = 1;
-    private static final int IMG_RESULT = 2;
+    private static final int IMAGE_GALLERY = 2;
 
     public static int progress;
     public static Bitmap previewImage;
+    public static boolean stopRecognition;
+    public static Boolean OCRThread = false;
 
     public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier() {
         @Override
+        //gets the percentage value of the progress
         public void onProgressValues(TessBaseAPI.ProgressValues progressValues) {
             progress = progressValues.getPercent();
         }
     });
 
+    //variables for ui elements
     private TextView editText;
     private Button loadImage;
     private Button getImage;
     private Button reset;
     private Uri imageURI;
 
-    public static Boolean OCRThread = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        //assign the ui elements to the variables
         loadImage = (Button) findViewById(R.id.buttonGetPicture);
         getImage = (Button) findViewById(R.id.buttonTakePicture);
         editText = (TextView) findViewById(R.id.editText);
@@ -62,18 +64,21 @@ public class MainActivity extends Activity {
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //set intent to pick a picture from the gallery
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-                startActivityForResult(intent, IMG_RESULT);
+                startActivityForResult(intent, IMAGE_GALLERY);
             }
         });
+
         getImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startCamera();
             }
         });
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,48 +91,48 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == IMG_RESULT && resultCode == RESULT_OK
+        if (requestCode == IMAGE_GALLERY && resultCode == RESULT_OK
                 && null != data) {
 
+            //get the URI of the image from Data
             imageURI = data.getData();
 
-            Bitmap b1 = null;
+            //get the bitmap of the image and
+            Bitmap bitmap = null;
             try {
-                b1 = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                startOCR(bitmap);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (1)", Toast.LENGTH_LONG)
                         .show();
             }
 
-            final Bitmap bt = b1;
-
-            startOCR(bt);
-
         } else if (requestCode == IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-            Bitmap b1 = null;
+            Bitmap bitmap = null;
             try {
-                b1 = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                startOCR(bitmap);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (2)", Toast.LENGTH_LONG)
                         .show();
             }
+            //delete image after use
             getContentResolver().delete(imageURI, null, null);
-
-            final Bitmap bt = b1;
-
-            startOCR(bt);
         }
     }
 
     private void startCamera() {
 
+        //create a uri for the new picture
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, TITLE);
-        values.put(MediaStore.Images.Media.DESCRIPTION, DESCRIPTION);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
         imageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        //set intent to make an image
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        //add the uri to the taken image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
         startActivityForResult(intent, IMAGE_CAPTURE);
     }
@@ -138,40 +143,49 @@ public class MainActivity extends Activity {
         Runnable r = new Runnable() {
             @Override
             public void run() {
+                //show that a OCRThread is active
                 OCRThread = true;
 
+                //set parameters for the recognition
                 picOCR.init("storage/emulated/0/", "deu");
                 picOCR.setImage(bm);
-                Log.d(TAG, "OCR started");
 
+                //start the recognition
                 final String readText = picOCR.getHOCRText(0);
 
+                //filter the actual text out of readText
                 final String rawText = parseHOCRText(readText);
 
+                //set the text to the textbox
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         editText.setText(rawText);
                     }
                 });
-                Log.d(TAG, "Text read");
 
+                //end recognition
                 picOCR.end();
-                Log.d(TAG, "OCR ended");
 
+                //thread now inactive
                 OCRThread = false;
             }
         };
+
+        //reset recognition progress and start recognition
         progress = 0;
         Thread OCR = new Thread(r, "OCR");
         OCR.start();
 
-
+        //get size of the display
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+
+        //scale image to display size
         previewImage = bmDownscale(bm, size.x * 3 / 4);
 
+        //start the ProgressActivity
         Intent intent = new Intent(this, ReadProgressActivity.class);
         startActivity(intent);
     }
@@ -186,10 +200,14 @@ public class MainActivity extends Activity {
     }
 
     public String parseHOCRText(final String text) {
-        String rawText = text.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "); //replace html tags with spaces
-        rawText = rawText.replaceFirst("   ", ""); //remove access spaces at the start
+        //don't filter text if recognition was stopped
+        if(stopRecognition == false) {
+            String rawText = text.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "); //replace html tags with spaces
+            rawText = rawText.replaceFirst("   ", ""); //remove access spaces at the start
 
-        return rawText;
+            return rawText;
+        }
+        return text;
     }
 }
 
