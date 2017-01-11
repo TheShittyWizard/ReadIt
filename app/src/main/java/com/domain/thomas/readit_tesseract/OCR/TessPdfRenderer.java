@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.domain.thomas.readit_tesseract;
+package com.domain.thomas.readit_tesseract.OCR;
 
 /**
  * Java representation of a native Tesseract PDF renderer

@@ -15,7 +15,7 @@
  * the License.
  */
 
-package com.domain.thomas.readit_tesseract;
+package com.domain.thomas.readit_tesseract.OCR;
 
 import java.io.File;
 

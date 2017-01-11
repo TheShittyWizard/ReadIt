@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +26,7 @@ public class MainActivity extends Activity {
     private static final int IMAGE_GALLERY = 2;
 
     public static int progress;
+    public static Bitmap imageBm;
     public static Bitmap previewImage;
     public static boolean stopRecognition;
     public static Boolean OCRThread = false;
@@ -98,10 +98,10 @@ public class MainActivity extends Activity {
             imageURI = data.getData();
 
             //get the bitmap of the image and
-            Bitmap bitmap = null;
+            imageBm = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
-                startOCR(bitmap);
+                imageBm = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                startOCR(imageBm);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (1)", Toast.LENGTH_LONG)
                         .show();
@@ -109,10 +109,10 @@ public class MainActivity extends Activity {
 
         } else if (requestCode == IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-            Bitmap bitmap = null;
+           imageBm = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
-                startOCR(bitmap);
+                imageBm = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                startOCR(imageBm);
             } catch (IOException e) {
                 Toast.makeText(this, "Something bad happened while getting a bitmap. (2)", Toast.LENGTH_LONG)
                         .show();

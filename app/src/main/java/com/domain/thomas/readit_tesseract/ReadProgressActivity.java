@@ -1,16 +1,12 @@
 package com.domain.thomas.readit_tesseract;
 
 import android.content.pm.ActivityInfo;
-import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
-import com.googlecode.tesseract.android.*;
-import com.googlecode.tesseract.android.TessBaseAPI;
 
 import static com.domain.thomas.readit_tesseract.MainActivity.previewImage;
 

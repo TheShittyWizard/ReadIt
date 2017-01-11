@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/progressImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Full Recognition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FullRecognition"
+        android:layout_marginBottom="21dp"
+        android:layout_above="@+id/ManualDefinition"
+        android:layout_alignStart="@+id/ManualDefinition"
+        android:layout_alignEnd="@+id/ManualDefinition" />
+
+    <Button
+        android:text="Manual Definition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ManualDefinition"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="27dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Automatic Definition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/AutomaticDefinition"
+        android:layout_alignBaseline="@+id/FullRecognition"
+        android:layout_alignBottom="@+id/FullRecognition"
+        android:layout_toEndOf="@+id/FullRecognition" />
+
+</RelativeLayout>
