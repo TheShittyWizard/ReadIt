@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ public class EditImageActivity extends AppCompatActivity{
     private Button manualDefinition;
     private Button automaticDefinition;
     public ImageView editImage;
+    public SurfaceView draw;
 
     public static Boolean OCRThread = false;
     public static Bitmap previewImage;
@@ -96,6 +98,11 @@ public class EditImageActivity extends AppCompatActivity{
                 }
             }
         });
+        manualDefinition.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View w){
+                startDraw();
+            }
+        });
     }
 
     public Bitmap bmDownscale(Bitmap bm, int hResTarget) {
@@ -106,7 +113,6 @@ public class EditImageActivity extends AppCompatActivity{
 
         return Bitmap.createScaledBitmap(bm, w2, hResTarget, false);
     }
-
     public String parseHOCRText(final String text) {
         //don't filter text if recognition was stopped
         if(stopRecognition == false) {
@@ -122,4 +128,9 @@ public class EditImageActivity extends AppCompatActivity{
         Intent intent = new Intent(this, ReadProgressActivity.class);
         startActivity(intent);
     }
+    public void startDraw(){
+        Intent intent = new Intent(this, DrawActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loadImage;
     private Button getImage;
     private Button reset;
-    private Uri imageURI;
+    public static Uri imageURI;
 
 
     @Override
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
             //delete image after use
-            getContentResolver().delete(imageURI, null, null);
+            //getContentResolver().delete(imageURI, null, null);
         }
     }
 
