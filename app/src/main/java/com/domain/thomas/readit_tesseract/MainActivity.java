@@ -21,8 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.io.IOException;
 
-import com.googlecode.tesseract.android.TessBaseAPI;
-
 public class MainActivity extends AppCompatActivity {
 
     //values to differentiate the Activities

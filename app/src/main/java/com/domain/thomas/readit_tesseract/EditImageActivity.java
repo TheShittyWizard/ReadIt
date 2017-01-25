@@ -129,7 +129,7 @@ public class EditImageActivity extends AppCompatActivity{
         startActivity(intent);
     }
     public void startDraw(){
-        Intent intent = new Intent(this, DrawActivity.class);
+        Intent intent = new Intent(this, OpenGLES20Activity.class);
         startActivity(intent);
     }
 
