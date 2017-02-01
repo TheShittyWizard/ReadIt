@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">ReadIt!</string>
-    <string name="stop_analysis">Stop analysis</string>
+    <string name="stop_analysis">Stop Analysis</string>
     <string name="open_camera">Take a Photo</string>
     <string name="open_gallery">Get from Gallery</string>
     <string name="reset">Reset</string>
     <string name="stop_ocr">Stop Analysis</string>
+    <string name="save_file">Save</string>
     <string name="manual">Manual</string>
     <string name="faq">FAQ</string>
     <string name="settings">Settings</string>
-
 
 
 </resources>
