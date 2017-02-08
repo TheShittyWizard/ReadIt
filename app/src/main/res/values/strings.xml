@@ -9,6 +9,10 @@
     <string name="manual">Manual</string>
     <string name="faq">FAQ</string>
     <string name="settings">Settings</string>
+    <string name="filename_hint">Filename</string>
+    <string name="data_type_hint">Data Type</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

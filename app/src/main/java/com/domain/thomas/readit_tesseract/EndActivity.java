@@ -1,12 +1,11 @@
 package com.domain.thomas.readit_tesseract;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
+import android.view.View;;
 import android.widget.Button;
 import android.widget.TextView;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +19,17 @@ import static com.domain.thomas.readit_tesseract.EditImageActivity.rawText;
 
 public class EndActivity extends AppCompatActivity {
 
-    final String dirName = "ReadIt";
-    final String parentDirName = Environment.DIRECTORY_DOCUMENTS;
-    final String fileName = "readit1.txt";
+    String dirName = "ReadIt";
+    String parentDirName = Environment.DIRECTORY_DOCUMENTS;
+    String fileName = "readit1.txt";
 
+    final Context context = this;
 
     public static TextView editText;
     private Button saveFile;
+    private TextView filename;
+    private Button saveButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,23 @@ public class EndActivity extends AppCompatActivity {
         saveFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveFile();
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialog_save);
+
+                saveButton = (Button) dialog.findViewById(R.id.buttonSaveConfirm);
+                filename = (TextView) dialog.findViewById(R.id.filename);
+
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fileName = filename.getText().toString() + ".txt";
+
+                        saveFile();
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
 
