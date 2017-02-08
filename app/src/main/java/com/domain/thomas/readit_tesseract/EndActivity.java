@@ -47,7 +47,6 @@ public class EndActivity extends AppCompatActivity {
 
         //set the text to the textbox
         editText.setText(rawText);
-
     }
 
 

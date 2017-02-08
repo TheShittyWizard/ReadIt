@@ -14,9 +14,11 @@ import android.widget.ImageView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import java.io.Console;
+
 import static com.domain.thomas.readit_tesseract.MainActivity.imageBm;
 
-public class EditImageActivity extends AppCompatActivity{
+public class EditImageActivity extends AppCompatActivity {
 
     private Button fullRecognition;
     private Button manualDefinition;
@@ -39,7 +41,7 @@ public class EditImageActivity extends AppCompatActivity{
     });
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_edit_image);
@@ -88,7 +90,7 @@ public class EditImageActivity extends AppCompatActivity{
                     }
                 };
 
-                if(OCRThread == false) {
+                if (OCRThread == false) {
                     //reset recognition progress and start recognition
                     progress = 0;
                     Thread OCR = new Thread(r, "OCR");
@@ -98,8 +100,8 @@ public class EditImageActivity extends AppCompatActivity{
                 }
             }
         });
-        manualDefinition.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View w){
+        manualDefinition.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View w) {
                 startDraw();
             }
         });
@@ -113,24 +115,28 @@ public class EditImageActivity extends AppCompatActivity{
 
         return Bitmap.createScaledBitmap(bm, w2, hResTarget, false);
     }
+
     public String parseHOCRText(final String text) {
         //don't filter text if recognition was stopped
-        if(stopRecognition == false) {
-            String rawText = text.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "); //replace html tags with spaces
-            rawText = rawText.replaceFirst("   ", ""); //remove access spaces at the start
+        if (stopRecognition == false) {
+            String rawText = text.replaceAll("(?s)(\\<.*?\\>)", ""); //delete all html tags
+            rawText = rawText.replaceAll("(?s)(     \n)", ""); //delete double newlines
+            rawText = rawText.replaceFirst("(?s)(  \n   \n    \n)", "");
+            rawText = rawText.replaceAll("     ", ""); //delete unnecessary spaces
 
             return rawText;
         }
         return text;
     }
-    public void startProgress(){
+
+    public void startProgress() {
         //start the ProgressActivity
         Intent intent = new Intent(this, ReadProgressActivity.class);
         startActivity(intent);
     }
-    public void startDraw(){
+
+    public void startDraw() {
         Intent intent = new Intent(this, OpenGLES20Activity.class);
         startActivity(intent);
     }
-
 }
