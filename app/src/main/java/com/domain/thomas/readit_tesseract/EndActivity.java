@@ -1,16 +1,15 @@
 package com.domain.thomas.readit_tesseract;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;;
-import android.widget.AdapterView;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -18,12 +17,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.domain.thomas.readit_tesseract.EditImageActivity.rawText;
 
-public class EndActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EndActivity extends AppCompatActivity /*implements AdapterView.OnItemSelectedListener*/ {
 
     String dirName = "ReadIt";
     String parentDirName = Environment.DIRECTORY_DOCUMENTS;
@@ -34,8 +31,9 @@ public class EndActivity extends AppCompatActivity implements AdapterView.OnItem
     public static TextView editText;
     private Button saveFile;
     private TextView filename;
-    private Button saveButton;
     private Spinner mimeSelection;
+
+    private String saveMimeType = ".txt";
 
 
     @Override
@@ -52,14 +50,11 @@ public class EndActivity extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.dialog_save);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(context);
 
-                saveButton = (Button) dialog.findViewById(R.id.buttonSaveConfirm);
-                filename = (TextView) dialog.findViewById(R.id.filename);
-                mimeSelection = (Spinner) dialog.findViewById(R.id.spinnerDataType);
-
-                List<String> mimeTypes = new ArrayList();
+                View mView = getLayoutInflater().inflate(R.layout.dialog_save, null);
+                filename = (TextView) mView.findViewById(R.id.filename);
+                mimeSelection = (Spinner) mView.findViewById(R.id.spinnerDataType);
 
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                         R.array.mime_type_array, android.R.layout.simple_spinner_item);
@@ -67,39 +62,27 @@ public class EndActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 mimeSelection.setAdapter(adapter);
 
-                saveButton.setOnClickListener(new View.OnClickListener() {
+                mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        fileName = filename.getText().toString() + ".txt";
-
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveMimeType = mimeSelection.getSelectedItem().toString();
+                        fileName = filename.getText() + saveMimeType;
                         saveFile();
-                        dialog.dismiss();
                     }
                 });
 
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.create();
                 dialog.show();
             }
         });
 
-        //set the text to the textbox
+        //set the text to the text box
         editText.setText(rawText);
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        parent.getItemAtPosition(pos);
-    }
-
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
-
-
     private void saveFile() {
         if (isExternalStorageWritable()) {
-            //File file = getAlbumStorageDir("ReadIt");
             String text = editText.getText().toString();
 
             generateNoteOnSD(parentDirName, dirName, fileName, text);
