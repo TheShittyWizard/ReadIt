@@ -22,11 +22,11 @@ import static com.domain.thomas.readit_tesseract.EditImageActivity.rawText;
 
 public class EndActivity extends AppCompatActivity /*implements AdapterView.OnItemSelectedListener*/ {
 
-    String dirName = "ReadIt";
-    String parentDirName = Environment.DIRECTORY_DOCUMENTS;
-    String fileName = "readit1.txt";
+    private String dirName = "ReadIt";
+    private String parentDirName = Environment.DIRECTORY_DOCUMENTS;
+    private String fileName = "readit1.txt";
 
-    final Context context = this;
+    private final Context context = this;
 
     public static TextView editText;
     private Button saveFile;
@@ -84,9 +84,7 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
     private void saveFile() {
         if (isExternalStorageWritable()) {
             String text = editText.getText().toString();
-
             generateNoteOnSD(parentDirName, dirName, fileName, text);
-
             Toast.makeText(this, "file saved as " + fileName, Toast.LENGTH_LONG).show();
         }
     }

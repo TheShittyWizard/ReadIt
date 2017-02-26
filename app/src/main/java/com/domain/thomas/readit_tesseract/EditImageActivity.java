@@ -123,6 +123,7 @@ public class EditImageActivity extends AppCompatActivity {
             rawText = rawText.replaceAll("(?s)(     \n)", ""); //delete double newlines
             rawText = rawText.replaceFirst("(?s)(  \n   \n    \n)", "");
             rawText = rawText.replaceAll("     ", ""); //delete unnecessary spaces
+            rawText = rawText.replaceAll("    \n" + "   \n" + "  \n", "");
 
             return rawText;
         }
