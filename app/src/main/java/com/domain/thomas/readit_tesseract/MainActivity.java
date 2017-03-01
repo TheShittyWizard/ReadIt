@@ -1,21 +1,17 @@
 package com.domain.thomas.readit_tesseract;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 
@@ -30,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
     public static Bitmap imageBm;
 
     //variables for ui elements
-    private TextView editText;
     private Button loadImage;
     private Button getImage;
-    private Button reset;
+
     public static Uri imageURI;
 
 
@@ -54,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         //assign the ui elements to the variables
         loadImage = (Button) findViewById(R.id.buttonGetPicture);
         getImage = (Button) findViewById(R.id.buttonTakePicture);
-        editText = (TextView) findViewById(R.id.editText);
-        reset = (Button) findViewById(R.id.buttonReset);
 
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 startCamera();
             }
         });
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText.setText("");
-            }
-        });
     }
 
     @Override
@@ -92,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        //textview.setText(item.getTitle());
         if(android.R.id.home == item.getItemId()){
             Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
         }
@@ -151,15 +136,3 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_CAPTURE);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

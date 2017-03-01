@@ -9,12 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
-
-import java.io.Console;
 
 import static com.domain.thomas.readit_tesseract.MainActivity.imageBm;
 
@@ -25,12 +25,15 @@ public class EditImageActivity extends AppCompatActivity {
     private Button automaticDefinition;
     public ImageView editImage;
     public SurfaceView draw;
+    public Spinner langSelection;
 
     public static Boolean OCRThread = false;
     public static Bitmap previewImage;
     public static int progress;
     public static boolean stopRecognition;
     public static String rawText;
+
+    private String lang = "deu";
 
     public static final TessBaseAPI picOCR = new TessBaseAPI(new TessBaseAPI.ProgressNotifier() {
         @Override
@@ -51,6 +54,7 @@ public class EditImageActivity extends AppCompatActivity {
         manualDefinition = (Button) findViewById(R.id.manualDefinition);
         automaticDefinition = (Button) findViewById(R.id.automaticDefinition);
         editImage = (ImageView) findViewById(R.id.editImage);
+        langSelection = (Spinner) findViewById(R.id.spinnerLanguage);
 
         //get size of the display
         Display display = getWindowManager().getDefaultDisplay();
@@ -66,6 +70,8 @@ public class EditImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                lang = langSelection.getSelectedItem().toString();
+
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
@@ -73,7 +79,7 @@ public class EditImageActivity extends AppCompatActivity {
                         OCRThread = true;
 
                         //set parameters for the recognition
-                        picOCR.init("storage/emulated/0/", "deu");
+                        picOCR.init("storage/emulated/0/", lang);
                         picOCR.setImage(imageBm);
 
                         //start the recognition
@@ -105,6 +111,11 @@ public class EditImageActivity extends AppCompatActivity {
                 startDraw();
             }
         });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        langSelection.setAdapter(adapter);
     }
 
     public Bitmap bmDownscale(Bitmap bm, int hResTarget) {

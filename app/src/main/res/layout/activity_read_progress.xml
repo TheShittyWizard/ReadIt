@@ -10,14 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.domain.thomas.readit_tesseract.ReadProgressActivity">
 
-    <Button
-        android:id="@+id/stopAnalysis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/stop_analysis" />
-
     <ImageView
         android:id="@+id/progressImageView"
         android:layout_width="wrap_content"
@@ -36,5 +28,13 @@
         android:layout_alignParentStart="true"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/stopAnalysis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_analysis"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

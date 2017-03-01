@@ -76,7 +76,7 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
 
                 mimeSelection.setAdapter(adapter);
 
-                mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                mBuilder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         saveMimeType = mimeSelection.getSelectedItem().toString();
