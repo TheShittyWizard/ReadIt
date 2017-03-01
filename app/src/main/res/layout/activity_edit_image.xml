@@ -45,10 +45,9 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/fullRecognition"
-        android:layout_alignStart="@+id/automaticDefinition"
         android:id="@+id/spinnerLanguage"
-        android:layout_toStartOf="@+id/manualDefinition"
-        android:layout_alignEnd="@+id/automaticDefinition" />
+        android:layout_alignTop="@+id/fullRecognition"
+        android:layout_alignEnd="@+id/automaticDefinition"
+        android:layout_alignStart="@+id/automaticDefinition" />
 
 </RelativeLayout>

@@ -1,8 +1,11 @@
 package com.domain.thomas.readit_tesseract;
 
 import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,8 +36,11 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
     public static TextView editText;
     private Button copyText;
     private Button saveFile;
+    private Button translate;
+    private Button share;
     private TextView filename;
     private Spinner mimeSelection;
+
 
     private String saveMimeType = ".txt";
 
@@ -49,6 +55,8 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
         editText = (TextView) findViewById(R.id.editText);
         copyText = (Button) findViewById(R.id.buttonCopy);
         saveFile = (Button) findViewById(R.id.buttonSave);
+        translate = (Button) findViewById(R.id.buttonTranslate);
+        share = (Button) findViewById(R.id.buttonShare);
 
         copyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +96,31 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
                 mBuilder.setView(mView);
                 AlertDialog dialog = mBuilder.create();
                 dialog.show();
+            }
+        });
+
+        translate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.setPackage("com.google.android.apps.translate");
+                String text = editText.getText().toString();
+                i.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(i);
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                String text = editText.getText().toString();
+                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
 
