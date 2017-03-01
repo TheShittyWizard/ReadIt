@@ -1,5 +1,6 @@
 package com.domain.thomas.readit_tesseract;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+import android.content.ClipboardManager;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,6 +31,7 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
     private final Context context = this;
 
     public static TextView editText;
+    private Button copyText;
     private Button saveFile;
     private TextView filename;
     private Spinner mimeSelection;
@@ -44,7 +47,18 @@ public class EndActivity extends AppCompatActivity /*implements AdapterView.OnIt
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editText = (TextView) findViewById(R.id.editText);
+        copyText = (Button) findViewById(R.id.buttonCopy);
         saveFile = (Button) findViewById(R.id.buttonSave);
+
+        copyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("copied text from readit", editText.getText().toString());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "text copied to clipboard", Toast.LENGTH_LONG).show();
+            }
+        });
 
         saveFile.setOnClickListener(new View.OnClickListener() {
             @Override

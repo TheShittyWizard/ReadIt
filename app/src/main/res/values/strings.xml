@@ -7,6 +7,7 @@
     <string name="reset">Reset</string>
     <string name="stop_ocr">Stop Analysis</string>
     <string name="save_file">Save</string>
+    <string name="copy_file">Copy</string>
     <string name="manual">Manual</string>
     <string name="faq">FAQ</string>
     <string name="settings">Settings</string>

@@ -4,23 +4,31 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="300dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:textColorLink="?attr/actionModeSplitBackground"
-        android:layout_height="400dp"
-        android:layout_marginTop="28dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <Button
+        android:text="@string/copy_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCopy"
+        android:layout_below="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
 
     <Button
         android:text="@string/save_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonSave"
-        android:layout_below="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_alignEnd="@+id/buttonCopy"
+        android:layout_below="@+id/buttonCopy" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:textColorLink="?attr/actionModeSplitBackground"
+        android:layout_height="370dp"
+        android:layout_width="300dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
