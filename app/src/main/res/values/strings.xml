@@ -17,6 +17,7 @@
     <string name="data_type_hint">Data Type</string>y
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="languages">Languages</string>
     <string-array name="mime_type_array">
         <item>.txt</item>
     </string-array>

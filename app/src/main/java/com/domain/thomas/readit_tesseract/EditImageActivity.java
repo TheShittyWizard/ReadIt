@@ -22,7 +22,6 @@ public class EditImageActivity extends AppCompatActivity {
 
     private Button fullRecognition;
     private Button manualDefinition;
-    private Button automaticDefinition;
     public ImageView editImage;
     public SurfaceView draw;
     public Spinner langSelection;
@@ -52,7 +51,6 @@ public class EditImageActivity extends AppCompatActivity {
 
         fullRecognition = (Button) findViewById(R.id.fullRecognition);
         manualDefinition = (Button) findViewById(R.id.manualDefinition);
-        automaticDefinition = (Button) findViewById(R.id.automaticDefinition);
         editImage = (ImageView) findViewById(R.id.editImage);
         langSelection = (Spinner) findViewById(R.id.spinnerLanguage);
 
@@ -62,7 +60,7 @@ public class EditImageActivity extends AppCompatActivity {
         display.getSize(size);
 
         //scale image to display size
-        previewImage = bmDownscale(imageBm, size.x * 3 / 4);
+        previewImage = bmDownscale(imageBm, size.x * 7 / 8);
 
         editImage.setImageBitmap(previewImage);
 

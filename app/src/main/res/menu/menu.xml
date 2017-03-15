@@ -2,10 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:title="@string/languages"
+        android:id="@+id/itemLang" />
     <item android:title="@string/manual"
         android:id="@+id/itemManual" />
     <item android:title="@string/faq"
         android:id="@+id/itemFAQ" />
-    <item android:title="@string/settings"
-        android:id="@+id/itemSettings" />
 </menu>

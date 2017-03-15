@@ -78,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        if(android.R.id.home == item.getItemId()){
-            Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case (R.id.itemLang):
+
+                return true;
         }
         return true;
     }

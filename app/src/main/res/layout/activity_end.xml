@@ -14,14 +14,14 @@
 
     <EditText
         android:id="@+id/editText"
+        android:layout_width="330dp"
+        android:layout_height="390dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="textMultiLine"
         android:textColorLink="?attr/actionModeSplitBackground"
-        android:layout_height="370dp"
-        android:layout_marginTop="30dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_width="330dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="@string/save_file"
@@ -32,14 +32,6 @@
         android:layout_alignStart="@+id/buttonCopy" />
 
     <Button
-        android:text="@string/translate_file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonTranslate"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/editText" />
-
-    <Button
         android:text="@string/share_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,5 +39,13 @@
         android:layout_below="@+id/buttonTranslate"
         android:layout_alignStart="@+id/buttonTranslate"
         android:layout_alignEnd="@+id/buttonTranslate" />
+
+    <Button
+        android:text="@string/translate_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonTranslate"
+        android:layout_below="@+id/editText"
+        android:layout_alignStart="@+id/editText" />
 
 </RelativeLayout>
